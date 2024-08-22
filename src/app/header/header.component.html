@@ -1,0 +1,21 @@
+<section class="header-outer-container" (click)="hide()">
+    <section class="header-container">
+        
+        <div class="heading">
+            chatbot
+        </div>
+        
+    </section>
+    <div class="minimize-container">
+        @if (!toggle) {
+            <span id="minimize" class="minimize-icon material-symbols-outlined">
+                minimize
+            </span>
+        }
+        @else {
+            <span id="minimize-add" class="add-icon minimize-icon material-symbols-outlined">
+                add
+            </span>
+        }
+    </div>
+</section>

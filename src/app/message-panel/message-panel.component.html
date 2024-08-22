@@ -1,0 +1,28 @@
+<section class="message-panel-container" #scrollframe >
+    @for (message of messages; track message.id) {
+        @if (message.sender === "user") {
+            <div class="message-inner-container" style="justify-content: flex-start;">
+                <div class="message-container">
+                    <div class="avatar" style="background-image: url('{{userPath}}')"></div>
+                    <div class="message">{{ message.content }}</div>
+                </div>
+            </div>
+        } @else {
+            <div class="message-inner-container" style="justify-content: flex-end;">
+                <div class="message-container">
+                    <div class="message assistant-message-style">{{ message.content }}</div>
+                    <div class="avatar" style="background-image: url('{{avatarPath}}')"></div>
+                </div>
+            </div>
+        }
+    } @empty {
+        <div class="no-message-container">No Messages</div>
+    }
+
+    @if (loading) {
+        <div class="loading-icon">
+            <img src="../../assets/loading.svg" width="70" />
+        </div>
+    }
+    
+</section>

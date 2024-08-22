@@ -1,0 +1,7 @@
+<section [ngClass]="{'container-hide': hide, 'app-container': !hide}">
+  <app-header (toggleChat)="toggleChat($event)"></app-header>
+  @if (!hide) {
+    <app-message-panel [messages]="data" [loading]="loading"></app-message-panel>
+    <app-user-input (sendMessageEmitter)="getMessage($event)"></app-user-input>
+  }
+</section>
