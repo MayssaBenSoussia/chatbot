@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { OpenAIService } from './openai.service';
 
+import { MailingService } from './mailing.service';
 
-describe('OpenaiService', () => {
-  let service: OpenAIService;
+describe('MailingService', () => {
+  let service: MailingService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(OpenAIService);
+    service = TestBed.inject(MailingService);
   });
 
   it('should be created', () => {

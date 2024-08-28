@@ -8,7 +8,7 @@ import { MessagePanelComponent } from './message-panel/message-panel.component';
 import { UserInputComponent } from './user-input/user-input.component';
 import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { OpenAIService } from './openai.service';
+
 
 @NgModule({
   imports: [
@@ -19,12 +19,7 @@ import { OpenAIService } from './openai.service';
     HttpClientModule,
   ],
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    MessagePanelComponent,
-    UserInputComponent,
+ 
   ],
-  providers: [OpenAIService],
-  bootstrap: [AppComponent],
 })
 export class AppModule {}

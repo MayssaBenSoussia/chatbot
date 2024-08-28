@@ -6,8 +6,8 @@ import { MessagePanelComponent } from './message-panel/message-panel.component';
 import { UserInputComponent } from './user-input/user-input.component';
 import { Message, MESSAGE_TYPE, OpenAIResponse } from './utility/constants';
 import { v4 as uuidv4 } from 'uuid';
-import { OpenAIService } from './openai.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HuggingFaceService } from './services/huggingface.service';
+import { HttpClientModule , HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -20,11 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
     MessagePanelComponent, 
     UserInputComponent, 
     HttpClientModule,
-    HeaderComponent,
-    UserInputComponent,
-    MessagePanelComponent
+    
   ],
-  providers: [OpenAIService],
+  providers: [HuggingFaceService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
@@ -35,28 +33,36 @@ export class AppComponent {
   loading: boolean = false
   hide: boolean = false;
 
-  constructor(private openaiService: OpenAIService) {}
+  constructor(private huggingFaceService: HuggingFaceService) {}
 
   toggleChat($event: string){
     this.hide = $event === "true"? true: false;
   }
 
-  getMessage($event: string){
-    if(!this.loading){
-      let messageObject: Message = this.createMessage($event, MESSAGE_TYPE.USER)
-      this.data = [...this.data].concat(messageObject)
+  getMessage($event: string) {
+    if (!this.loading) {
+      const userMessage = this.createMessage($event, MESSAGE_TYPE.USER);
+      this.data = [...this.data, userMessage];
       this.loading = true;
-
-      this.openaiService.QueryPrompt($event).subscribe(
-        (response: OpenAIResponse): void => {
-          messageObject = this.createMessage(response.content.replace(/【[0-9]*†source】/g, ''), MESSAGE_TYPE.ASSISTANT)
-          this.data = [...this.data].concat(messageObject)
+  
+      this.huggingFaceService.getCompletion($event).subscribe(
+        (response: any) => {
+          console.log("resop",response)
+          const assistantMessage = this.createMessage(
+            response[0].generated_text.trim() || 'No response received',
+            MESSAGE_TYPE.ASSISTANT
+          );
+          this.data = [...this.data, assistantMessage];
           this.loading = false;
-        })
-    }
-    else{
-      let messageObject: Message = this.createMessage($event, MESSAGE_TYPE.USER)
-      this.data = [...this.data].concat(messageObject)
+        },
+        (error: HttpErrorResponse) => { // Explicitly type the error parameter
+          console.error('Error during API call:', error.message);
+          this.loading = false;
+        }
+      );
+    } else {
+      const userMessage = this.createMessage($event, MESSAGE_TYPE.USER);
+      this.data = [...this.data, userMessage];
     }
   }
 

@@ -44,5 +44,3 @@ Thumbs.db
 .editorconfig
 
 .env
-venv
-/__pycache__/
